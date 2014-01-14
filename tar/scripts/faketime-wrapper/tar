@@ -1,0 +1,25 @@
+#!/bin/bash
+
+mytar="$HOME/.local/usr/bin/tar"
+
+if [[ -z $FAKETIME_TIME ]]
+
+	if [[ -x $mytar ]] ; then
+		$mytar --faketime="$FAKETIME_TIME" "$@"
+	else
+		echo "ERROR: can not find an executable tar program/script in $mytar"
+		exit 1
+	fi
+
+else
+
+	if [[ -x $mytar ]] ; then
+		$mytar "$@"
+	else
+		echo "ERROR: can not find an executable tar program/script in $mytar"
+		exit 1
+	fi
+
+fi
+
+

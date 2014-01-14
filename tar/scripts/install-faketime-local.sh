@@ -1,5 +1,6 @@
  
 mkdir -p ~/.local/usr/bin/
-mkdir -p ~/.local/usr/lib/faketime-wrappers/
+mkdir -p ~/.local/usr/lib/faketime-wrapper/
 
-mkdir -p ~/.local/usr/bin/
+cp -r faketime-wrapper/ ~/.local/usr/lib/
+
