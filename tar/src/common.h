@@ -66,6 +66,9 @@
 
 #include <paxlib.h>
 
+#include <system.h>
+#include <fnmatch.h>
+
 /* Log base 2 of common values.  */
 #define LG_8 3
 #define LG_64 6
@@ -906,4 +909,42 @@ void finish_deferred_unlinks (void);
 /* Module exit.c */
 extern void (*fatal_exit_hook) (void);
 
+
+/* Wildcard matching settings */
+enum wildcards
+  {
+    default_wildcards, /* For exclusion == enable_wildcards,
+			  for inclusion == disable_wildcards */
+    disable_wildcards,
+    enable_wildcards
+  };
+
+struct tar_args        /* Variables used during option parsing */
+{
+  struct textual_date *textual_date; /* Keeps the arguments to --newer-mtime
+					and/or --date option if they are
+					textual dates */
+  enum wildcards wildcards;        /* Wildcard settings (--wildcards/
+				      --no-wildcards) */
+  int matching_flags;              /* exclude_fnmatch options */
+  int include_anchored;            /* Pattern anchoring options used for
+				      file inclusion */
+  bool o_option;                   /* True if -o option was given */
+  bool pax_option;                 /* True if --pax-option was given */
+  char const *backup_suffix_string;   /* --suffix option argument */
+  char const *version_control_string; /* --backup option argument */
+  bool input_files;                /* True if some input files where given */
+  int compress_autodetect;         /* True if compression autodetection should
+				      be attempted when creating archives */
+	bool faketime_use; // should we use a faketime
+	struct timespec faketime_time; // what faketime value will be applied
+};
+
+extern struct tar_args args;
+
+int fstat_my (int fd, struct stat *buf);
+
+int fstatat_my (int dirfd, const char *pathname, struct stat *buf, int flags);
+
 _GL_INLINE_HEADER_END
+
