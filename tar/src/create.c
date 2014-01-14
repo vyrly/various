@@ -1375,7 +1375,7 @@ create_archive (void)
 			      break;
 			    }
 			  st.fd = fd;
-			  if (fstat (fd, &st.stat) != 0)
+			  if (fstat_my (fd, &st.stat) != 0)
 			    {
 			      stat_diag (p->name);
 			      break;
@@ -1593,7 +1593,7 @@ restore_parent_fd (struct tar_stat_info const *st)
 
       if (parentfd < 0)
 	parentfd = - errno;
-      else if (! (fstat (parentfd, &parentstat) == 0
+      else if (! (fstat_my (parentfd, &parentstat) == 0
 		  && parent->stat.st_ino == parentstat.st_ino
 		  && parent->stat.st_dev == parentstat.st_dev))
 	{
@@ -1607,7 +1607,7 @@ restore_parent_fd (struct tar_stat_info const *st)
 			       open_searchdir_flags);
 	  if (0 <= origfd)
 	    {
-	      if (fstat (parentfd, &parentstat) == 0
+	      if (fstat_my (parentfd, &parentstat) == 0
 		  && parent->stat.st_ino == parentstat.st_ino
 		  && parent->stat.st_dev == parentstat.st_dev)
 		parentfd = origfd;
@@ -1619,6 +1619,29 @@ restore_parent_fd (struct tar_stat_info const *st)
       parent->fd = parentfd;
     }
 }
+
+int fstat_my (int fd, struct stat *buf) {
+	int ret = fstat (fd,buf);
+	if (args.faketime_use) {
+		printf("fstat replacing with time %d\n", args.faketime_time);
+		buf->st_atim = args.faketime_time;
+		buf->st_mtim = args.faketime_time;
+		buf->st_ctim = args.faketime_time;
+	}
+	return ret;
+}
+
+int fstatat_my (int dirfd, const char *pathname, struct stat *buf, int flags) {
+	int ret = fstatat (dirfd, pathname, buf, flags);
+	if (args.faketime_use) {
+		printf("fstatat replacing with time %d\n", args.faketime_time);
+		buf->st_atim = args.faketime_time;
+		buf->st_mtim = args.faketime_time;
+		buf->st_ctim = args.faketime_time;
+	}
+	return ret;
+}
+
 
 /* Dump a single file, recursing on directories.  ST is the file's
    status info, NAME its name relative to the parent directory, and P
@@ -1656,7 +1679,7 @@ dump_file0 (struct tar_stat_info *st, char const *name, char const *p)
       errno = - parentfd;
       diag = open_diag;
     }
-  else if (fstatat (parentfd, name, &st->stat, fstatat_flags) != 0)
+  else if (fstatat_my (parentfd, name, &st->stat, fstatat_flags) != 0)
     diag = stat_diag;
   else if (file_dumpable_p (&st->stat))
     {
@@ -1666,7 +1689,7 @@ dump_file0 (struct tar_stat_info *st, char const *name, char const *p)
       else
 	{
 	  st->fd = fd;
-	  if (fstat (fd, &st->stat) != 0)
+	  if (fstat_my (fd, &st->stat) != 0)
 	    diag = stat_diag;
 	}
     }
@@ -1798,10 +1821,10 @@ dump_file0 (struct tar_stat_info *st, char const *name, char const *p)
 		  ok = false;
 		}
 	      else
-		ok = fstatat (parentfd, name, &final_stat, fstatat_flags) == 0;
+		ok = fstatat_my (parentfd, name, &final_stat, fstatat_flags) == 0;
 	    }
 	  else
-	    ok = fstat (fd, &final_stat) == 0;
+	    ok = fstat_my (fd, &final_stat) == 0;
 
 	  if (! ok)
 	    file_removed_diag (p, top_level, stat_diag);

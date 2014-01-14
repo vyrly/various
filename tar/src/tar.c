@@ -356,7 +356,9 @@ enum
   WILDCARDS_OPTION,
   XATTR_OPTION,
   XATTR_EXCLUDE,
-  XATTR_INCLUDE
+  XATTR_INCLUDE,
+  FAKETIME,
+  FAKETIME_REFERENCE
 };
 
 const char *argp_program_version = "tar (" PACKAGE_NAME ") " VERSION;
@@ -839,8 +841,15 @@ static struct argp_option options[] = {
   {NULL, 0, NULL, 0,
    N_("Other options:"), GRID },
 
+  {"faketime", FAKETIME, N_("STRING"), 0,
+   N_("pretend that files read from filesystem have the time (c/m/atime) as given as string e.g. 2008-12-24 23:59:59"), GRID+1 },
+
+  {"faketime-reference", FAKETIME_REFERENCE, N_("STRING"), 0,
+   N_("pretend that files read from filesystem have the time (c/m/atime) same as mtime of this reference file (as touch --reference)"), GRID+1 },
+
   {"restrict", RESTRICT_OPTION, 0, 0,
    N_("disable use of some potentially harmful options"), -1 },
+
 #undef GRID
 
   {0, 0, 0, 0, 0, 0}
@@ -860,35 +869,9 @@ static enum atime_preserve const atime_preserve_types[] =
    (minus 1 for NULL guard) */
 ARGMATCH_VERIFY (atime_preserve_args, atime_preserve_types);
 
-/* Wildcard matching settings */
-enum wildcards
-  {
-    default_wildcards, /* For exclusion == enable_wildcards,
-			  for inclusion == disable_wildcards */
-    disable_wildcards,
-    enable_wildcards
-  };
+// declaration of struct tar_args moved to common.h
+struct tar_args args; // as declared in common.h
 
-struct tar_args        /* Variables used during option parsing */
-{
-  struct textual_date *textual_date; /* Keeps the arguments to --newer-mtime
-					and/or --date option if they are
-					textual dates */
-  enum wildcards wildcards;        /* Wildcard settings (--wildcards/
-				      --no-wildcards) */
-  int matching_flags;              /* exclude_fnmatch options */
-  int include_anchored;            /* Pattern anchoring options used for
-				      file inclusion */
-  bool o_option;                   /* True if -o option was given */
-  bool pax_option;                 /* True if --pax-option was given */
-  char const *backup_suffix_string;   /* --suffix option argument */
-  char const *version_control_string; /* --backup option argument */
-  bool input_files;                /* True if some input files where given */
-  int compress_autodetect;         /* True if compression autodetection should
-				      be attempted when creating archives */
-};
-
-
 #define MAKE_EXCL_OPTIONS(args) \
  ((((args)->wildcards != disable_wildcards) ? EXCLUDE_WILDCARDS : 0) \
   | (args)->matching_flags \
@@ -2087,6 +2070,37 @@ parse_opt (int key, char *arg, struct argp_state *state)
       set_warning_option (arg);
       break;
 
+		case FAKETIME:
+			{
+				const char* parse = arg;
+				if (!arg) { // double checking, should be verified by arg parsing
+					printf("Missing parameter!\n");
+					exit(1);
+				}
+				struct tm tm; 
+				memset (&tm, '\0', sizeof (tm));
+				const char* parsed_to = strptime(parse,"%Y-%m-%d %H:%M:%S", &tm);
+
+				if (!parsed_to) {
+			 		USAGE_ERROR ((0, 0, "%s: %s", quotearg_colon (arg),
+					_("Unknown date format")));
+					break;
+				}
+				if ( (size_t)(parsed_to - parse) != strlen(parse)) {
+			 		USAGE_ERROR ((0, 0, "(length) %s: %s", quotearg_colon (arg),
+					_("Unknown date format")));
+					break;
+				}
+				args->faketime_use = true;
+				args->faketime_time.tv_sec = mktime (&tm);
+				args->faketime_time.tv_nsec = 0; // TODO support this option?
+				// printf("Will faketime: %d\n", args->faketime_time.tv_sec); // debug
+			}
+
+			
+			
+			break;
+
     case '0':
     case '1':
     case '2':
@@ -2221,7 +2235,6 @@ static int subcommand_class[] = {
 /* Return t if the subcommand_option is in class(es) f */
 #define IS_SUBCOMMAND_CLASS(f) (subcommand_class[subcommand_option] & (f))
 
-static struct tar_args args;
 
 static void
 decode_options (int argc, char **argv)
@@ -2241,6 +2254,8 @@ decode_options (int argc, char **argv)
   args.version_control_string = 0;
   args.input_files = false;
   args.compress_autodetect = false;
+	args.faketime_use = false;
+	// args.faketime_time
 
   subcommand_option = UNKNOWN_SUBCOMMAND;
   archive_format = DEFAULT_FORMAT;

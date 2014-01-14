@@ -19,6 +19,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+2014-01-14  Rfree  <rfree@i2pmail.org>
+
+	* src/create.c: --faketime option works now (in simple cases)
+
 2009-03-05  Sergey Poznyakoff  <gray@gnu.org.ua>
 
 	* src/incremen.c: --no-recursive works with --incremental.
