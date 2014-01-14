@@ -2,7 +2,7 @@
 
 mytar="$HOME/.local/usr/bin/tar"
 
-if [[ -z $FAKETIME_TIME ]]
+if [[ -z $FAKETIME_TIME ]] ; then
 
 	if [[ -x $mytar ]] ; then
 		$mytar --faketime="$FAKETIME_TIME" "$@"
