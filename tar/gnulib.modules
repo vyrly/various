@@ -1,0 +1,98 @@
+# List of gnulib modules needed for GNU tar.
+# A module name per line. Empty lines and comments are ignored.
+
+# Copyright 2005-2010, 2012-2013 Free Software Foundation, Inc.
+
+# This file is part of GNU tar.
+
+# GNU tar is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+
+# GNU tar is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+acl
+alloca
+argmatch
+argp
+argp-version-etc
+backupfile
+closeout
+configmake
+dirname
+error
+exclude
+extern-inline
+exitfail
+fchmodat
+fchownat
+fcntl-h
+fdopendir
+fdutimensat
+fileblocks
+fnmatch-gnu
+fseeko
+fstatat
+full-write
+futimens
+getline
+getopt-gnu
+getpagesize
+gettext
+gettime
+gitlog-to-changelog
+hash
+human
+inttostr
+inttypes
+lchown
+linkat
+localcharset
+manywarnings
+mkdirat
+mkdtemp
+mkfifoat
+modechange
+obstack
+openat
+parse-datetime
+priv-set
+progname
+quote
+quotearg
+readlinkat
+renameat
+root-uid
+rpmatch
+safe-read
+savedir
+selinux-at
+setenv
+snprintf
+stat-time
+stdbool
+stdint
+stpcpy
+strdup-posix
+strerror
+strtol
+strtoul
+symlinkat
+timespec
+unlinkat
+unlinkdir
+unlocked-io
+utimensat
+version-etc-fsf
+xalloc
+xalloc-die
+xgetcwd
+xstrtoumax
+xvasprintf
