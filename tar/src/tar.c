@@ -2632,8 +2632,6 @@ main (int argc, char **argv)
   set_start_time ();
   set_program_name (argv[0]);
 
-  for (int i=0; i<argc; ++i) printf("tar got argument #%d: '%s'\n", i, argv[i]);
-
   setlocale (LC_ALL, "");
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);

@@ -1623,7 +1623,6 @@ restore_parent_fd (struct tar_stat_info const *st)
 int fstat_my (int fd, struct stat *buf) {
 	int ret = fstat (fd,buf);
 	if (args.faketime_use) {
-		printf("fstat replacing with time %d\n", args.faketime_time);
 		buf->st_atim = args.faketime_time;
 		buf->st_mtim = args.faketime_time;
 		buf->st_ctim = args.faketime_time;
@@ -1634,7 +1633,6 @@ int fstat_my (int fd, struct stat *buf) {
 int fstatat_my (int dirfd, const char *pathname, struct stat *buf, int flags) {
 	int ret = fstatat (dirfd, pathname, buf, flags);
 	if (args.faketime_use) {
-		printf("fstatat replacing with time %d\n", args.faketime_time);
 		buf->st_atim = args.faketime_time;
 		buf->st_mtim = args.faketime_time;
 		buf->st_ctim = args.faketime_time;
