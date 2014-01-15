@@ -1,11 +1,13 @@
 #!/bin/bash
 
 mytar="$HOME/.local/usr/bin/tar"
+#$mytar --faketime="2013-01-01 17:01:01" "$@"
 
-if [[ -z $FAKETIME_TIME ]] ; then
+if [[ ! -z $FAKETIME_TIME ]] ; then
 
 	if [[ -x $mytar ]] ; then
-		$mytar --faketime="$FAKETIME_TIME" "$@"
+		$mytar "$@" --faketime "$FAKETIME_TIME" 
+		exit $?
 	else
 		echo "ERROR: can not find an executable tar program/script in $mytar"
 		exit 1
@@ -15,6 +17,7 @@ else
 
 	if [[ -x $mytar ]] ; then
 		$mytar "$@"
+		exit $?
 	else
 		echo "ERROR: can not find an executable tar program/script in $mytar"
 		exit 1
@@ -22,4 +25,5 @@ else
 
 fi
 
+echo "ERROR: end of code too early ($0)"
 
