@@ -1,5 +1,0 @@
-se-context.o: se-context.c ../config.h /usr/include/selinux/context.h
-
-../config.h:
-
-/usr/include/selinux/context.h:
