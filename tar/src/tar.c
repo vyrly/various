@@ -359,7 +359,8 @@ enum
   XATTR_INCLUDE,
   FAKETIME,
   FAKETIME_ZERO,
-  FAKETIME_REFERENCE
+  FAKETIME_REFERENCE,
+  SORT_INPUT
 };
 
 const char *argp_program_version = "tar (" PACKAGE_NAME ") " VERSION;
@@ -850,6 +851,10 @@ static struct argp_option options[] = {
 
   {"faketime-reference", FAKETIME_REFERENCE, N_("STRING"), 0,
    N_("pretend that files read from filesystem have the time (c/m/atime) same as mtime of this reference file (as touch --reference)"), GRID+1 },
+
+  {"sort-input", SORT_INPUT, N_(""), 0,
+   N_("pretend that files read from filesystem have the time (c/m/atime) same as mtime of this reference file (as touch --reference)"), GRID+1 },
+
 
   {"restrict", RESTRICT_OPTION, 0, 0,
    N_("disable use of some potentially harmful options"), -1 },
@@ -2129,6 +2134,14 @@ parse_opt (int key, char *arg, struct argp_state *state)
 			
 			
 			break;
+			
+	case SORT_INPUT:
+		{
+			args->sort_use = true;
+		}
+			
+			
+			break;
 
     case '0':
     case '1':
@@ -2283,7 +2296,8 @@ decode_options (int argc, char **argv)
   args.version_control_string = 0;
   args.input_files = false;
   args.compress_autodetect = false;
-	args.faketime_use = false;
+  args.faketime_use = false;
+  args.sort_use = false;
 	// args.faketime_time
 
   subcommand_option = UNKNOWN_SUBCOMMAND;

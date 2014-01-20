@@ -937,6 +937,7 @@ struct tar_args        /* Variables used during option parsing */
   int compress_autodetect;         /* True if compression autodetection should
 				      be attempted when creating archives */
 	bool faketime_use; // should we use a faketime
+	bool sort_use;
 	struct timespec faketime_time; // what faketime value will be applied
 };
 
