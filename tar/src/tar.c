@@ -358,6 +358,7 @@ enum
   XATTR_EXCLUDE,
   XATTR_INCLUDE,
   FAKETIME,
+  FAKETIME_ZERO,
   FAKETIME_REFERENCE
 };
 
@@ -842,6 +843,9 @@ static struct argp_option options[] = {
    N_("Other options:"), GRID },
 
   {"faketime", FAKETIME, N_("STRING"), 0,
+   N_("pretend that files read from filesystem have the time (c/m/atime) as given as string e.g. 2008-12-24 23:59:59"), GRID+1 },
+
+  {"faketimezero", FAKETIME_ZERO, N_(""), 0,
    N_("pretend that files read from filesystem have the time (c/m/atime) as given as string e.g. 2008-12-24 23:59:59"), GRID+1 },
 
   {"faketime-reference", FAKETIME_REFERENCE, N_("STRING"), 0,
@@ -2070,33 +2074,43 @@ parse_opt (int key, char *arg, struct argp_state *state)
       set_warning_option (arg);
       break;
 
-		case FAKETIME:
-			{
-				const char* parse = arg;
-				if (!arg) { // double checking, should be verified by arg parsing
-					printf("Missing parameter!\n");
-					exit(1);
-				}
-				struct tm tm; 
-				memset (&tm, '\0', sizeof (tm));
-				const char* parsed_to = strptime(parse,"%Y-%m-%d %H:%M:%S", &tm);
-
-				if (!parsed_to) {
-			 		USAGE_ERROR ((0, 0, "%s: %s", quotearg_colon (arg),
-					_("Unknown date format")));
-					break;
-				}
-				if ( (size_t)(parsed_to - parse) != strlen(parse)) {
-			 		USAGE_ERROR ((0, 0, "(length) %s: %s", quotearg_colon (arg),
-					_("Unknown date format")));
-					break;
-				}
-				args->faketime_use = true;
-				args->faketime_time.tv_sec = mktime (&tm);
-				args->faketime_time.tv_nsec = 0; // TODO support this option?
-				// printf("Will faketime: %d\n", args->faketime_time.tv_sec); // debug
+	case FAKETIME:
+		{
+			const char* parse = arg;
+			if (!arg) { // double checking, should be verified by arg parsing
+				printf("Missing parameter!\n");
+				exit(1);
 			}
+			struct tm tm; 
+			memset (&tm, '\0', sizeof (tm));
+			const char* parsed_to = strptime(parse,"%Y-%m-%d %H:%M:%S", &tm);
 
+			if (!parsed_to) {
+		 		USAGE_ERROR ((0, 0, "%s: %s", quotearg_colon (arg),
+				_("Unknown date format")));
+				break;
+			}
+			if ( (size_t)(parsed_to - parse) != strlen(parse)) {
+		 		USAGE_ERROR ((0, 0, "(length) %s: %s", quotearg_colon (arg),
+				_("Unknown date format")));
+				break;
+			}
+			args->faketime_use = true;
+			args->faketime_time.tv_sec = mktime (&tm);
+			args->faketime_time.tv_nsec = 0; // TODO support this option?
+			// printf("Will faketime: %d\n", args->faketime_time.tv_sec); // debug
+		}
+		break;
+
+	case FAKETIME_ZERO:
+		{
+			
+			args->faketime_use = true;
+			args->faketime_time.tv_sec = 0;
+			//printf ( "set up 0");
+			args->faketime_time.tv_nsec = 0; // TODO support this option?
+			 //printf("Will faketime: %d\n", args->faketime_time.tv_sec); // debug
+		}
 			
 			
 			break;
