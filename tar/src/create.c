@@ -1640,7 +1640,25 @@ int fstatat_my (int dirfd, const char *pathname, struct stat *buf, int flags) {
 	return ret;
 }
 
+/*int fstat_my_zero (int fd, struct stat *buf) {
+	int ret = fstat (fd,buf);
+	if (args.faketime_use) {
+		buf->st_atim = args.faketime_time_zero;
+		buf->st_mtim = args.faketime_time_zero;
+		buf->st_ctim = args.faketime_time_zero;
+	}
+	return ret;
+}
 
+int fstatat_my_zero (int dirfd, const char *pathname, struct stat *buf, int flags) {
+	int ret = fstatat (dirfd, pathname, buf, flags);
+	if (args.faketime_use) {
+		buf->st_atim = args.faketime_time_zero;
+		buf->st_mtim = args.faketime_time_zero;
+		buf->st_ctim = args.faketime_time_zero;
+	}
+	return ret;
+}*/
 /* Dump a single file, recursing on directories.  ST is the file's
    status info, NAME its name relative to the parent directory, and P
    its full name (which may be relative to the working directory).  */
