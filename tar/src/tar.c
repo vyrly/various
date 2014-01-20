@@ -845,7 +845,7 @@ static struct argp_option options[] = {
   {"faketime", FAKETIME, N_("STRING"), 0,
    N_("pretend that files read from filesystem have the time (c/m/atime) as given as string e.g. 2008-12-24 23:59:59"), GRID+1 },
 
-  {"faketimezero", FAKETIME_ZERO, N_(""), 0,
+  {"faketime-zero", FAKETIME_ZERO, N_(""), 0,
    N_("pretend that files read from filesystem have the time (c/m/atime) as given as string e.g. 2008-12-24 23:59:59"), GRID+1 },
 
   {"faketime-reference", FAKETIME_REFERENCE, N_("STRING"), 0,
@@ -2108,6 +2108,22 @@ parse_opt (int key, char *arg, struct argp_state *state)
 			args->faketime_use = true;
 			args->faketime_time.tv_sec = 0;
 			//printf ( "set up 0");
+			args->faketime_time.tv_nsec = 0; // TODO support this option?
+			 //printf("Will faketime: %d\n", args->faketime_time.tv_sec); // debug
+		}
+			
+			
+			break;
+			
+	case FAKETIME_REFERENCE:
+		{
+			struct stat att;
+			stat (arg ,&att);
+			int f_d = 0; 
+			struct tm* st; 
+			st = localtime (&(att.st_mtime));
+			args->faketime_use = true;
+			args->faketime_time.tv_sec = mktime(st);
 			args->faketime_time.tv_nsec = 0; // TODO support this option?
 			 //printf("Will faketime: %d\n", args->faketime_time.tv_sec); // debug
 		}
