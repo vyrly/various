@@ -64,6 +64,65 @@ char *
 streamsavedir (DIR *dirp)
 {
   char *name_space;
+  size_t allocated = NAME_SIZE_DEFAULT;
+  size_t allocated_array = NAMES_ARRAY_SIZE_DEFAULT;
+  size_t used = 0;
+  int save_errno;
+
+  if (dirp == NULL)
+    return NULL;
+
+  name_space = xmalloc (allocated);
+
+  for (;;)
+    {
+      struct dirent const *dp;
+      char const *entry;
+
+      errno = 0;
+      dp = readdir (dirp);
+      if (! dp)
+        break;
+
+      /* Skip "", ".", and "..".  "" is returned by at least one buggy
+         implementation: Solaris 2.4 readdir on NFS file systems.  */
+      entry = dp->d_name;
+      if (entry[entry[0] != '.' ? 0 : entry[1] != '.' ? 1 : 2] != '\0')
+        {
+          size_t entry_size = _D_EXACT_NAMLEN (dp) + 1;
+          if (used + entry_size < used)
+            xalloc_die ();
+          if (allocated <= used + entry_size)
+            {
+              do
+                {
+                  if (2 * allocated < allocated)
+                    xalloc_die ();
+                  allocated *= 2;
+                }
+              while (allocated <= used + entry_size);
+
+              name_space = xrealloc (name_space, allocated);
+            }
+          memcpy (name_space + used, entry, entry_size);
+          used += entry_size;
+        }
+    }
+  name_space[used] = '\0';
+  save_errno = errno;
+  if (save_errno != 0)
+    {
+      free (name_space);
+      errno = save_errno;
+      return NULL;
+    }
+  return name_space;
+}
+   
+char *
+streamsavedirsorted (DIR *dirp)
+{
+  char *name_space;
   char **names_to_sort;
   size_t allocated = NAME_SIZE_DEFAULT;
   size_t allocated_array = NAMES_ARRAY_SIZE_DEFAULT;
@@ -73,7 +132,7 @@ streamsavedir (DIR *dirp)
 
   if (dirp == NULL)
     return NULL;
-
+   
   name_space = xmalloc (allocated);
 	names_to_sort = xmalloc(allocated_array);
   for (;;)

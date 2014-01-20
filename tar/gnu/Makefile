@@ -353,7 +353,7 @@ am__relativize = \
   done; \
   reldir="$$dir2"
 pkglibexecdir = ${libexecdir}/${PACKAGE}
-ACLOCAL = ${SHELL} /home/jarek/various/tar/build-aux/missing --run aclocal-1.11
+ACLOCAL = ${SHELL} /home/myuser/work/deterministic-builds/various/tar/build-aux/missing --run aclocal-1.11
 ALLOCA = 
 ALLOCA_H = alloca.h
 AMTAR = $${TAR-tar}
@@ -361,11 +361,11 @@ AM_DEFAULT_VERBOSITY = 0
 APPLE_UNIVERSAL_BUILD = 0
 AR = ar
 ARFLAGS = cru
-AUTOCONF = ${SHELL} /home/jarek/various/tar/build-aux/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/jarek/various/tar/build-aux/missing --run autoheader
-AUTOM4TE = ${SHELL} /home/jarek/various/tar/build-aux/missing --run autom4te
-AUTOMAKE = ${SHELL} /home/jarek/various/tar/build-aux/missing --run automake-1.11
-AWK = gawk
+AUTOCONF = ${SHELL} /home/myuser/work/deterministic-builds/various/tar/build-aux/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/myuser/work/deterministic-builds/various/tar/build-aux/missing --run autoheader
+AUTOM4TE = ${SHELL} /home/myuser/work/deterministic-builds/various/tar/build-aux/missing --run autom4te
+AUTOMAKE = ${SHELL} /home/myuser/work/deterministic-builds/various/tar/build-aux/missing --run automake-1.11
+AWK = mawk
 BACKUP_LIBEXEC_SCRIPTS = 
 BACKUP_SBIN_SCRIPTS = 
 BACKUP_SED_COND = /^\#ELSE_DATE_FORMAT_OK/,/^\#ENDIF_DATE_FORMAT_OK/d;/^\#IF_DATE_FORMAT_OK/d
@@ -809,7 +809,7 @@ HAVE_RENAMEAT = 1
 HAVE_REWINDDIR = 1
 HAVE_RPMATCH = 1
 HAVE_SCANDIR = 1
-HAVE_SECURE_GETENV = 1
+HAVE_SECURE_GETENV = 0
 HAVE_SETENV = 1
 HAVE_SETHOSTNAME = 1
 HAVE_SIGACTION = 1
@@ -918,8 +918,8 @@ LIBS =
 LIBUNISTRING_UNITYPES_H = unitypes.h
 LIBUNISTRING_UNIWIDTH_H = uniwidth.h
 LIB_ACL = 
-LIB_CLOCK_GETTIME = 
-LIB_SELINUX = 
+LIB_CLOCK_GETTIME = -lrt
+LIB_SELINUX = -lselinux
 LIB_SETSOCKOPT = 
 LOCALCHARSET_TESTS_ENVIRONMENT = CHARSETALIASDIR="$(abs_top_builddir)/gnu"
 LOCALE_FR = none
@@ -929,7 +929,7 @@ LOCALE_ZH_CN = none
 LTLIBICONV = 
 LTLIBINTL = 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/jarek/various/tar/build-aux/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/myuser/work/deterministic-builds/various/tar/build-aux/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
 MSGFMT = /usr/bin/msgfmt
 MSGFMT_015 = /usr/bin/msgfmt
@@ -942,7 +942,7 @@ NEXT_AS_FIRST_DIRECTIVE_GETOPT_H = <getopt.h>
 NEXT_AS_FIRST_DIRECTIVE_INTTYPES_H = <inttypes.h>
 NEXT_AS_FIRST_DIRECTIVE_LANGINFO_H = <langinfo.h>
 NEXT_AS_FIRST_DIRECTIVE_LOCALE_H = <locale.h>
-NEXT_AS_FIRST_DIRECTIVE_SELINUX_SELINUX_H = 
+NEXT_AS_FIRST_DIRECTIVE_SELINUX_SELINUX_H = <selinux/selinux.h>
 NEXT_AS_FIRST_DIRECTIVE_SIGNAL_H = <signal.h>
 NEXT_AS_FIRST_DIRECTIVE_STDARG_H = 
 NEXT_AS_FIRST_DIRECTIVE_STDDEF_H = 
@@ -967,7 +967,7 @@ NEXT_GETOPT_H = <getopt.h>
 NEXT_INTTYPES_H = <inttypes.h>
 NEXT_LANGINFO_H = <langinfo.h>
 NEXT_LOCALE_H = <locale.h>
-NEXT_SELINUX_SELINUX_H = 
+NEXT_SELINUX_SELINUX_H = <selinux/selinux.h>
 NEXT_SIGNAL_H = <signal.h>
 NEXT_STDARG_H = <stdarg.h>
 NEXT_STDDEF_H = 
@@ -1031,7 +1031,7 @@ REPLACE_FTELL = 0
 REPLACE_FTELLO = 0
 REPLACE_FTRUNCATE = 0
 REPLACE_FUTIMENS = 1
-REPLACE_GETCWD = 0
+REPLACE_GETCWD = 1
 REPLACE_GETDELIM = 0
 REPLACE_GETDOMAINNAME = 0
 REPLACE_GETDTABLESIZE = 0
@@ -1145,7 +1145,7 @@ REPLACE_WCWIDTH = 0
 REPLACE_WRITE = 0
 RSH = 
 SED = /bin/sed
-SELINUX_CONTEXT_H = selinux/context.h
+SELINUX_CONTEXT_H = 
 SET_MAKE = 
 SHELL = /bin/bash
 SIG_ATOMIC_T_SUFFIX = 
@@ -1178,10 +1178,10 @@ XGETTEXT_015 = /usr/bin/xgettext
 XGETTEXT_EXTRA_OPTIONS =  --flag=argp_error:2:c-format --flag=argp_failure:4:c-format --flag=error:3:c-format --flag=error_at_line:5:c-format --flag=asprintf:2:c-format --flag=vasprintf:2:c-format --flag=xasprintf:1:c-format
 YACC = bison -y
 YFLAGS = 
-abs_builddir = /home/jarek/various/tar/gnu
-abs_srcdir = /home/jarek/various/tar/gnu
-abs_top_builddir = /home/jarek/various/tar
-abs_top_srcdir = /home/jarek/various/tar
+abs_builddir = /home/myuser/work/deterministic-builds/various/tar/gnu
+abs_srcdir = /home/myuser/work/deterministic-builds/various/tar/gnu
+abs_top_builddir = /home/myuser/work/deterministic-builds/various/tar
+abs_top_srcdir = /home/myuser/work/deterministic-builds/various/tar
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -1200,8 +1200,8 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-gl_LIBOBJS =  asnprintf.o chdir-long.o fcntl.o futimens.o getopt.o getopt1.o linkat.o openat-proc.o printf-args.o printf-parse.o selinux-at.o utimensat.o vasnprintf.o
-gl_LTLIBOBJS =  asnprintf.lo chdir-long.lo fcntl.lo futimens.lo getopt.lo getopt1.lo linkat.lo openat-proc.lo printf-args.lo printf-parse.lo selinux-at.lo utimensat.lo vasnprintf.lo
+gl_LIBOBJS =  asnprintf.o chdir-long.o fcntl.o futimens.o getcwd.o getcwd-lgpl.o getfilecon.o getopt.o getopt1.o linkat.o openat-proc.o printf-args.o printf-parse.o secure_getenv.o selinux-at.o utimensat.o vasnprintf.o
+gl_LTLIBOBJS =  asnprintf.lo chdir-long.lo fcntl.lo futimens.lo getcwd.lo getcwd-lgpl.lo getfilecon.lo getopt.lo getopt1.lo linkat.lo openat-proc.lo printf-args.lo printf-parse.lo secure_getenv.lo selinux-at.lo utimensat.lo vasnprintf.lo
 gltests_LIBOBJS = 
 gltests_LTLIBOBJS = 
 gltests_WITNESS = IN_TAR_GNULIB_TESTS
@@ -1213,7 +1213,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/jarek/various/tar/build-aux/install-sh
+install_sh = ${SHELL} /home/myuser/work/deterministic-builds/various/tar/build-aux/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 lispdir = ${datarootdir}/emacs/site-lisp
@@ -2419,17 +2419,17 @@ selinux/selinux.h: se-selinux.in.h $(top_builddir)/config.status $(UNUSED_PARAME
 	} > $@-t && \
 	chmod a-x $@-t && \
 	mv $@-t $@
-selinux/context.h: se-context.in.h $(top_builddir)/config.status $(UNUSED_PARAMETER_H)
-	$(AM_V_at)$(MKDIR_P) selinux
-	$(AM_V_GEN)rm -f $@-t $@ && \
-	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
-	  sed -e '/definition of _GL_UNUSED_PARAMETER/r $(UNUSED_PARAMETER_H)' \
-	      < $(srcdir)/se-context.in.h; \
-	} > $@-t && \
-	chmod a-x $@-t && \
-	mv $@-t $@
-#selinux/context.h: $(top_builddir)/config.status
-#	rm -f $@
+#selinux/context.h: se-context.in.h $(top_builddir)/config.status $(UNUSED_PARAMETER_H)
+#	$(AM_V_at)$(MKDIR_P) selinux
+#	$(AM_V_GEN)rm -f $@-t $@ && \
+#	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+#	  sed -e '/definition of _GL_UNUSED_PARAMETER/r $(UNUSED_PARAMETER_H)' \
+#	      < $(srcdir)/se-context.in.h; \
+#	} > $@-t && \
+#	chmod a-x $@-t && \
+#	mv $@-t $@
+selinux/context.h: $(top_builddir)/config.status
+	rm -f $@
 
 # We need the following in order to create <signal.h> when the system
 # doesn't have a complete one.
