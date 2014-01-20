@@ -43,26 +43,39 @@
 # define NAME_SIZE_DEFAULT 512
 #endif
 
+#ifndef NAMES_ARRAY_SIZE_DEFAULT
+# define NAMES_ARRAY_SIZE_DEFAULT 512
+#endif
+
+int cstring_cmp(const void *a, const void *b)
+{
+	const char **ia = (const char **)a;
+	const char **ib = (const char **)b;
+	return strcasecmp(*ia, *ib);
+}
+
 /* Return a freshly allocated string containing the file names
    in directory DIRP, separated by '\0' characters;
    the end is marked by two '\0' characters in a row.
    Return NULL (setting errno) if DIRP cannot be read.
    If DIRP is NULL, return NULL without affecting errno.  */
-
+   
 char *
 streamsavedir (DIR *dirp)
 {
   char *name_space;
+  char **names_to_sort;
   size_t allocated = NAME_SIZE_DEFAULT;
   size_t allocated_array = NAMES_ARRAY_SIZE_DEFAULT;
   size_t used = 0;
+  size_t names_array_used = 0;
   int save_errno;
 
   if (dirp == NULL)
     return NULL;
 
   name_space = xmalloc (allocated);
-
+	names_to_sort = xmalloc(allocated_array);
   for (;;)
     {
       struct dirent const *dp;
@@ -79,24 +92,52 @@ streamsavedir (DIR *dirp)
       if (entry[entry[0] != '.' ? 0 : entry[1] != '.' ? 1 : 2] != '\0')
         {
           size_t entry_size = _D_EXACT_NAMLEN (dp) + 1;
-          if (used + entry_size < used)
-            xalloc_die ();
-          if (allocated <= used + entry_size)
-            {
-              do
-                {
-                  if (2 * allocated < allocated)
-                    xalloc_die ();
-                  allocated *= 2;
-                }
-              while (allocated <= used + entry_size);
+          
+					names_to_sort[names_array_used] = xmalloc(entry_size);
 
-              name_space = xrealloc (name_space, allocated);
-            }
-          memcpy (name_space + used, entry, entry_size);
-          used += entry_size;
+          if (allocated_array <= names_array_used)
+						{
+							if (2 * allocated_array < allocated_array)
+										xalloc_die ();
+							allocated_array *= 2;
+							names_to_sort = xrealloc (names_to_sort, allocated_array);
+						}
+          memcpy (names_to_sort[names_array_used], entry, entry_size);
+          names_array_used += 1;
         }
     }
+	qsort(names_to_sort, names_array_used, sizeof(char *), cstring_cmp);
+
+  for (int i = 0; i < names_array_used; i++)
+		{
+			
+			char const *entry;
+			entry = names_to_sort[i];
+			size_t entry_size = strlen(entry) + 1;
+			if (used + entry_size < used)
+				xalloc_die ();
+			if (allocated <= used + entry_size)
+				{
+					do
+						{
+							if (2 * allocated < allocated)
+								xalloc_die ();
+							allocated *= 2;
+						}
+					while (allocated <= used + entry_size);
+
+					name_space = xrealloc (name_space, allocated);
+				}
+			memcpy (name_space + used, entry, entry_size);
+			used += entry_size;
+		}
+
+  for (int i=0; i < names_array_used; i++)
+		{
+			free(names_to_sort[i]);
+		}
+	free(names_to_sort);
+
   name_space[used] = '\0';
   save_errno = errno;
   if (save_errno != 0)
