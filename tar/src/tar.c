@@ -2119,7 +2119,6 @@ parse_opt (int key, char *arg, struct argp_state *state)
 		{
 			struct stat att;
 			stat (arg ,&att);
-			int f_d = 0; 
 			struct tm* st; 
 			st = localtime (&(att.st_mtime));
 			args->faketime_use = true;
