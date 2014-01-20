@@ -846,14 +846,14 @@ static struct argp_option options[] = {
   {"faketime", FAKETIME, N_("STRING"), 0,
    N_("pretend that files read from filesystem have the time (c/m/atime) as given as string e.g. 2008-12-24 23:59:59"), GRID+1 },
 
-  {"faketime-zero", FAKETIME_ZERO, N_(""), 0,
-   N_("pretend that files read from filesystem have the time (c/m/atime) as given as string e.g. 2008-12-24 23:59:59"), GRID+1 },
+  {"faketime-zero", FAKETIME_ZERO, 0, 0,
+   N_("pretend that files read from filesystem have the time (c/m/atime) as given as string e.g. 2008-12-24 23:59:59"), -1 },
 
   {"faketime-reference", FAKETIME_REFERENCE, N_("STRING"), 0,
    N_("pretend that files read from filesystem have the time (c/m/atime) same as mtime of this reference file (as touch --reference)"), GRID+1 },
 
-  {"sort-input", SORT_INPUT, N_(""), 0,
-   N_("pretend that files read from filesystem have the time (c/m/atime) same as mtime of this reference file (as touch --reference)"), GRID+1 },
+  {"sort-input", SORT_INPUT, 0, 0,
+   N_("pretend that files read from filesystem have the time (c/m/atime) same as mtime of this reference file (as touch --reference)"), -1 },
 
 
   {"restrict", RESTRICT_OPTION, 0, 0,
