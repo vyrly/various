@@ -163,7 +163,7 @@ streamsavedirsorted (DIR *dirp)
           names_array_used += 1;
         }
     }
-	//qsort(names_to_sort, names_array_used, sizeof(char *), cstring_cmp);
+	qsort(names_to_sort, names_array_used, sizeof(char *), cstring_cmp);
 
   for (int i = 0; i < names_array_used; i++)
 		{
