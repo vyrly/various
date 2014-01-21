@@ -6,7 +6,7 @@ mytar="$HOME/.local/usr/bin/tar"
 if [[ ! -z $FAKETIME_TIME ]] ; then
 
 	if [[ -x $mytar ]] ; then
-		$mytar "$@" --faketime "$FAKETIME_TIME" --sort-input
+		$mytar "$@" --faketime "$FAKETIME_TIME" --sort-input --owner root --group root  --numeric-owner
 		exit $?
 	else
 		echo "ERROR: can not find an executable tar program/script in $mytar"
