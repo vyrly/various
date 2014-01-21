@@ -2672,8 +2672,6 @@ more_options (int argc, char **argv)
 int
 main (int argc, char **argv)
 {
-	printf("This version of program is broken (crashes), do not use it.\n"); return 1; // XXX
-
   set_start_time ();
   set_program_name (argv[0]);
 

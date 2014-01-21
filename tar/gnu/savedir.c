@@ -44,7 +44,7 @@
 #endif
 
 #ifndef NAMES_ARRAY_SIZE_DEFAULT
-# define NAMES_ARRAY_SIZE_DEFAULT 512
+# define NAMES_ARRAY_SIZE_DEFAULT 64
 #endif
 
 int cstring_cmp(const void *a, const void *b)
@@ -118,7 +118,7 @@ streamsavedir (DIR *dirp)
     }
   return name_space;
 }
-   
+
 char *
 streamsavedirsorted (DIR *dirp)
 {
@@ -134,7 +134,7 @@ streamsavedirsorted (DIR *dirp)
     return NULL;
    
   name_space = xmalloc (allocated);
-	names_to_sort = xmalloc(allocated_array);
+	names_to_sort = xmalloc(allocated_array * sizeof(name_space));
   for (;;)
     {
       struct dirent const *dp;
@@ -150,26 +150,23 @@ streamsavedirsorted (DIR *dirp)
       entry = dp->d_name;
       if (entry[entry[0] != '.' ? 0 : entry[1] != '.' ? 1 : 2] != '\0')
         {
-          size_t entry_size = _D_EXACT_NAMLEN (dp) + 1;
-          
-					names_to_sort[names_array_used] = xmalloc(entry_size);
-
           if (allocated_array <= names_array_used)
 						{
-							if (2 * allocated_array < allocated_array)
-										xalloc_die ();
+							if (2 * allocated_array < allocated_array)	xalloc_die ();
 							allocated_array *= 2;
-							names_to_sort = xrealloc (names_to_sort, allocated_array);
+							names_to_sort = xrealloc (names_to_sort, allocated_array * sizeof(name_space));
 						}
+						
+          size_t entry_size = _D_EXACT_NAMLEN (dp) + 1;
+					names_to_sort[names_array_used] = xmalloc(entry_size);						
           memcpy (names_to_sort[names_array_used], entry, entry_size);
           names_array_used += 1;
         }
     }
-	qsort(names_to_sort, names_array_used, sizeof(char *), cstring_cmp);
+	//qsort(names_to_sort, names_array_used, sizeof(char *), cstring_cmp);
 
   for (int i = 0; i < names_array_used; i++)
 		{
-			
 			char const *entry;
 			entry = names_to_sort[i];
 			size_t entry_size = strlen(entry) + 1;
